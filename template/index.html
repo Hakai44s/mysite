@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Portefeuille</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #2f4f4f;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 28px;
+            color: #d6cecc; /* Bleu Bootstrap */
+        }
+
+        h2 {
+            font-size: 22px;
+            color: #198754; /* Vert Bootstrap */
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #293133;
+            border: 1px solid #d6cecc;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #293133;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgb(0, 0, 0);
+        }
+
+        .value {
+            font-weight: 700;
+        }
+
+        .crypto-price, .token-market-cap {
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+
+        .token-market-cap {
+            background-color: #ffc107;
+            color: #343a40;
+        }
+
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .positive {
+        color: green;
+
+        }
+
+        .negative {
+            color: red;
+        }
+
+        .balance {
+            color: white;
+        }
+
+        .text-base {
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Total du portefeuille : ${{ total }}</h1>
+
+        <ul>
+            {% for token, details in token_balance.items() %}
+                <li>
+                    <span class ="balance">{{ token }} : <span class="value">${{ details.balance }}</span>
+                    {% if details.evolution is not none %}
+                        <span class="{% if details.evolution >= 0 %}positive{% else %}negative{% endif %}">
+                            ({{ details.evolution }}%)
+                        </span>
+                    {% else %}
+                        <span>(n/a)</span>
+                    {% endif %}
+                    </span>
+                    <div>
+
+                        <span class="crypto-price">Prix : ${{ token_price[token] }}</span>
+                        <span class="token-market-cap">Cap. Marché : ${{ token_mc[token] }}</span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="last-maj">
+            <h2>Dernière maj du prix :</h2>
+            <p class="text-base">{{ current_time }} (GMT)</p>
+        </div>
+
+        <div class="gold-container">
+            <h2>Prix de l'or :</h2>
+            <p class="text-base">$ {{ goldPrice }}</p>
+        </div>
+
+        <div class="zakat-container">
+            <h2>Zakat :</h2>
+            <p class="text-base">Montant de la zakat : ${{ zakat }}</p>
+            <p class="text-base">{{ msg }}</p>
+        </div>
+
+        <div class="counter-container">
+            <h2>Compteur :</h2>
+            <p class="text-base">Jours écoulés : {{ counter }}</p>
+    </div>
+
+
+    <div class="chart-container">
+        <img src="static/plot_evol.png" alt="Cryptocurrency Values">
+    </div>
+
+
+</body>
+</html>
