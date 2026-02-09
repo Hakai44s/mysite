@@ -19,10 +19,24 @@ def load_dotenv(dotenv_path=".env"):
 
 load_dotenv()
 
+
+def get_secret(key, default=""):
+    """Lit un secret depuis l'env puis depuis st.secrets (Streamlit Cloud)."""
+    value = os.getenv(key)
+    if value:
+        return value
+    try:
+        import streamlit as st
+
+        secret_value = st.secrets.get(key, default)
+        return str(secret_value) if secret_value is not None else default
+    except Exception:
+        return default
+
 # Cles API et autres configurations (depuis variables d'environnement)
 API_KEYS = {
-    "etherscan": os.getenv("ETHERSCAN_API_KEY", ""),
-    "coinmarketcap": os.getenv("CMC_API_KEY", ""),
+    "etherscan": get_secret("ETHERSCAN_API_KEY", ""),
+    "coinmarketcap": get_secret("CMC_API_KEY", ""),
 }
 
 # Cles API individuelles pour un acces plus facile
@@ -30,7 +44,7 @@ ETHERSCAN_API_KEY = API_KEYS["etherscan"]
 CMC_API_KEY = API_KEYS["coinmarketcap"]
 
 # Adresse du portefeuille
-MY_WALLET = os.getenv("MY_WALLET", "")
+MY_WALLET = get_secret("MY_WALLET", "")
 
 # Chemins des fichiers
 STATIC_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static")
