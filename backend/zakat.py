@@ -29,8 +29,9 @@ def calcul_zakat(total, gold_price):
     # Calculer le montant de la zakat (2.5% du total)
     zakat_amount = round(0.025 * total, 2)
     
-    # Déterminer si c'est le moment de payer la zakat
-    if days_passed % 365 == 0 and days_passed > 0:
+    # Des que 365 jours sont atteints, la zakat est consideree due.
+    # Cela evite de rater l'alerte si un run quotidien est manque.
+    if days_passed >= 365:
         msg = "Paye"
     else:
         msg = "Pas encore le moment de payer"

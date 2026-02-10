@@ -74,6 +74,7 @@ Puis ouvrir l'URL affichee par Streamlit (souvent `http://localhost:8501`).
 ETHERSCAN_API_KEY=...
 CMC_API_KEY=...
 MY_WALLET=0x...
+XRP_WALLET=r...
 ```
 
 Le fichier `.env` est ignore par git.
@@ -84,7 +85,39 @@ Pour le runtime Streamlit, utilise **App settings > Secrets** (pas GitHub Secret
 ETHERSCAN_API_KEY = "..."
 CMC_API_KEY = "..."
 MY_WALLET = "0x..."
+XRP_WALLET = "r..."
 ```
 
 ### GitHub Secrets
 Les GitHub Secrets sont utilises pour GitHub Actions CI/CD, pas directement par l'application Streamlit en execution.
+
+## Alerte email automatique (gratuit)
+
+Un workflow GitHub Actions quotidien est inclus:
+- fichier: `.github/workflows/zakat-alert.yml`
+- script: `scripts/check_zakat_alert.py`
+- envoi: `backend/notifier.py`
+
+Il tourne chaque jour et envoie un email uniquement si `msg == "Paye"`.
+
+### Secrets GitHub requis
+Dans `Settings > Secrets and variables > Actions`, ajoute:
+- `ETHERSCAN_API_KEY`
+- `CMC_API_KEY`
+- `MY_WALLET`
+- `XRP_WALLET`
+- `SMTP_HOST` (ex: `smtp.gmail.com`)
+- `SMTP_PORT` (ex: `587`)
+- `SMTP_USER`
+- `SMTP_PASS` (mot de passe SMTP / app password)
+- `ALERT_TO_EMAIL`
+
+Optionnels:
+- `ALERT_FROM_EMAIL` (sinon `SMTP_USER`)
+- `SMTP_USE_STARTTLS` (`true` par defaut)
+- `SMTP_USE_SSL` (`false` par defaut)
+
+### Test manuel
+1. Ouvre l'onglet `Actions` sur GitHub
+2. Lance `Zakat Email Alert` via `Run workflow`
+3. Verifie les logs d'execution et la reception email

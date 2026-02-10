@@ -5,7 +5,7 @@ import requests
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from .config import CMC_API_KEY, ETHERSCAN_API_KEY, API_KEYS, MY_WALLET, USE_MOCK_DATA
+from .config import CMC_API_KEY, ETHERSCAN_API_KEY, API_KEYS, MY_WALLET, XRP_WALLET, USE_MOCK_DATA
 from .utils import format_number
 from coinmarketcapapi import CoinMarketCapAPI
 
@@ -201,7 +201,7 @@ def get_xrp_amount(verify_ssl=True):
         session = requests.Session()
         session.verify = verify_ssl
 
-        url = 'https://api.xrpscan.com/api/v1/account/rPzz8Wn4suPTB7eNxiX4JEVetUNetahVCV'
+        url = f"https://api.xrpscan.com/api/v1/account/{XRP_WALLET}"
         response = session.get(url, timeout=HTTP_TIMEOUT)
 
         if response.status_code != 200:

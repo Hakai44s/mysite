@@ -45,6 +45,7 @@ CMC_API_KEY = API_KEYS["coinmarketcap"]
 
 # Adresse du portefeuille
 MY_WALLET = get_secret("MY_WALLET", "")
+XRP_WALLET = get_secret("XRP_WALLET", "rPzz8Wn4suPTB7eNxiX4JEVetUNetahVCV")
 
 # Chemins des fichiers
 STATIC_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "static")
