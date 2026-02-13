@@ -17,13 +17,17 @@ L'application est maintenant en mode **backend integre**:
 mysite/
 |- backend/
 |  |- config.py
+|  |- binance_client.py
 |  |- crypto_data.py
 |  |- utils.py
 |  |- visualization.py
 |  |- zakat.py
 |- frontend/
+|  |- auth.py
 |  |- config.py
 |  |- api.py              # appelle directement backend/* (sans HTTP)
+|  |- pages/
+|  |  |- Trading.py       # KPIs Binance + ordres manuels
 |  |- ui.py
 |  |- streamlit_app.py    # point d'entree Streamlit
 |- static/
@@ -64,6 +68,8 @@ Puis ouvrir l'URL affichee par Streamlit (souvent `http://localhost:8501`).
 - Les donnees mock ne sont plus ecrites dans `static/data_crypto.csv`.
 - Le calcul peut prendre quelques dizaines de secondes selon la latence des APIs externes.
 - Si une API externe est lente/indisponible, certaines lignes peuvent revenir a 0 temporairement.
+- L'application est protegee par mot de passe (`APP_PASSWORD`).
+- La page `Trading` est en mode securise par defaut (ordres reels desactives).
 
 ## Secrets et configuration
 
@@ -75,6 +81,12 @@ ETHERSCAN_API_KEY=...
 CMC_API_KEY=...
 MY_WALLET=0x...
 XRP_WALLET=r...
+APP_PASSWORD=...
+BINANCE_API_KEY=...
+BINANCE_API_SECRET=...
+BINANCE_TESTNET=false
+BINANCE_ENABLE_LIVE_TRADING=false
+BINANCE_QUOTE_ASSET=USDT
 ```
 
 Le fichier `.env` est ignore par git.
@@ -86,6 +98,12 @@ ETHERSCAN_API_KEY = "..."
 CMC_API_KEY = "..."
 MY_WALLET = "0x..."
 XRP_WALLET = "r..."
+APP_PASSWORD = "..."
+BINANCE_API_KEY = "..."
+BINANCE_API_SECRET = "..."
+BINANCE_TESTNET = "false"
+BINANCE_ENABLE_LIVE_TRADING = "false"
+BINANCE_QUOTE_ASSET = "USDT"
 ```
 
 ### GitHub Secrets
